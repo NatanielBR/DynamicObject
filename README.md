@@ -1,8 +1,10 @@
+[![](https://jitpack.io/v/NatanielBR/DynamicObject.svg)](https://jitpack.io/#NatanielBR/DynamicObject)
+
 DynamicObject it's a library who seeks be like dynamic keyword in C#.
 
 # Install
 
-To be made
+Use jitpack tutorial to add this library in your project.
 
 # Usage
 
