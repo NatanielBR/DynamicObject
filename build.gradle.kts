@@ -3,10 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.7.10"
     application
+    `maven-publish`
 }
 
-group = "info.infinitytec.natanielbr"
-version = "1.0-SNAPSHOT"
+group = "io.neoold.dynamic-object"
+version = "0.1"
 
 repositories {
     mavenCentral()
@@ -26,4 +27,16 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainClass.set("MainKt")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "io.neoold"
+            artifactId = "dynamic-object"
+            version = "0.1"
+
+            from(components["java"])
+        }
+    }
 }
