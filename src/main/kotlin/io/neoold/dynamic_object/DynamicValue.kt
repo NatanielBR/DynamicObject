@@ -2,6 +2,7 @@ package io.neoold.dynamic_object
 
 import io.neoold.dynamic_object.DynamicList.Companion.toDynamic
 import io.neoold.dynamic_object.DynamicObject.Companion.toDynamic
+import java.util.*
 
 /**
  * Represents a value without type defined. This class use Any type and unsafe casts to transform
@@ -92,6 +93,14 @@ class DynamicValue(var value: Any?) {
                 throw Exception("Invalid type")
             }
         } as T?
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return toType<String>() == other
+    }
+
+    override fun hashCode(): Int {
+        return Objects.hashCode(value)
     }
 
     companion object {

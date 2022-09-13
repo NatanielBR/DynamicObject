@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "io.neoold.dynamic-object"
-version = "0.1"
+version = "0.2"
 
 repositories {
     mavenCentral()
@@ -34,7 +34,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "io.neoold"
             artifactId = "dynamic-object"
-            version = "0.1"
+            version = "0.2"
 
             from(components["java"])
         }
