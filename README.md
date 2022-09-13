@@ -19,7 +19,8 @@ Using this json by example:
     },
     {
       "name": "Natan",
-      "age": 22
+      "age": 22,
+      "country": "Brazil"
     }
   ]
 }
@@ -38,6 +39,7 @@ val dynamicObject = mapOf(
         mapOf(
             "name" to "Natan",
             "age" to 22,
+            "country" to "Brazil",
         ),
     )
 )
@@ -57,6 +59,8 @@ dynamicObject["data"]!!.toTypeNullSafe<DynamicList>()
 dynamicObject["data"]!!.asDynamicList()[0].asDynamicObject()["name"]!!.toType<String>()
 // Or using "comma operation"
 dynamicObject["data", "0", "name"]?.toType<String>()
+// Or using filter, using 'key?value'
+dynamicObject["data", "name?Peter", "name"]?.toType<String>()
 ````
 
 - Age of Natan:
@@ -65,4 +69,14 @@ dynamicObject["data", "0", "name"]?.toType<String>()
 dynamicObject["data"]!!.asDynamicList()[1].asDynamicObject()["age"]!!.toType<Int>()
 // Or using "comma operation"
 dynamicObject["data", "1", "age"]?.toType<Int>()
+// Of using filter, using 'key?value'
+dynamicObject["data", "name?Natan", "age"]?.toType<String>()
+````
+
+- get name of who have 'country' key:
+
+````kotlin
+dynamicObject["data"]?.asDynamicList()?.first { it.asDynamicObject().containsKey("country") }?.asDynamicObject()?.get("name")?.toType<String>()
+// of using filter, using 'key?'
+dynamicObject["data", "country?", "name"]?.toType<String>()
 ````

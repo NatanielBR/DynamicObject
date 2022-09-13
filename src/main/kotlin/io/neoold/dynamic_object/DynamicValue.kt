@@ -11,6 +11,14 @@ import java.util.*
  */
 class DynamicValue(var value: Any?) {
 
+    init {
+        if (value is Map<*, *>) {
+            value = (value as Map<*, *>).map { it.key as String to it.value }.toMap().toDynamic()
+        } else if (value is List<*>) {
+            value = (value as List<*>).toDynamic()
+        }
+    }
+
     /**
      * Method to check if Generic type is same type as value.
      */
