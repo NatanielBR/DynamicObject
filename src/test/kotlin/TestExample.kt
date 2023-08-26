@@ -1,3 +1,4 @@
+import io.neoold.dynamic_object.DynamicJsonValue.Companion.jsonToDynamicObject
 import io.neoold.dynamic_object.DynamicList
 import io.neoold.dynamic_object.DynamicObject
 import io.neoold.dynamic_object.DynamicObject.Companion.toDynamic
@@ -29,6 +30,38 @@ class TestExample {
 
         dynamic["baz"] = false
         
+        /*
+          dynamic["baz"] // DynamicValue<Boolean> -> false
+          dynamic["foo", "bar"] // DynamicValue<DynamicObject>
+          dynamic["foo", "bar", "foo_bar"] // DynamicValue<Int> -> 1
+          dynamic["foo", "bar", "bar"] // null
+          dynamic["bar"] // null
+         */
+
+        expect(true) { dynamic["baz"]?.isType<Boolean>() }
+        expect(false) { dynamic["baz"]!!.toTypeNullSafe() }
+        expect(true) { dynamic["foo", "bar"]?.isType<DynamicObject>() }
+        expect(true) { dynamic["foo", "bar", "foo_bar"]?.isType<Int>() }
+        expect(1) { dynamic["foo", "bar", "foo_bar"]!!.toTypeNullSafe() }
+        expect(null) { dynamic["foo", "bar", "bar"] }
+        expect(null) { dynamic["bar"] }
+    }
+
+    @Test
+    fun `Json to DynamicObject test`() {
+        val jsonText = """
+            {
+            "foo": {
+                "bar": {
+                    "foo_bar": 1,
+                    "bar_foo": 2
+                }
+            },
+            "baz": false
+        }
+        """.trimIndent()
+        val dynamic = jsonText.jsonToDynamicObject().asDynamicObject()
+
         /*
           dynamic["baz"] // DynamicValue<Boolean> -> false
           dynamic["foo", "bar"] // DynamicValue<DynamicObject>

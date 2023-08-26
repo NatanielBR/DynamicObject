@@ -80,3 +80,24 @@ dynamicObject["data"]?.asDynamicList()?.first { it.asDynamicObject().containsKey
 // of using filter, using 'key?'
 dynamicObject["data", "country?", "name"]?.toType<String>()
 ````
+
+# Json to DynamicObject
+
+````kotlin
+val jsonText = """
+    {
+        "foo": {
+            "bar": {
+                "foo_bar": 1,
+                "bar_foo": 2
+            }
+        },
+        "baz": false
+    }
+"""
+
+val dynamic = jsonText.jsonToDynamicObject().asDynamicObject()
+````
+
+Remember to call `asDynamicObject()` to get `DynamicObject` instance,
+because a JSON have a `DynamicList` or `DynamicObject` as root.
