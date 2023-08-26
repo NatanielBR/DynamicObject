@@ -26,7 +26,7 @@ class TestExample {
                 "foo_bar" to 1,
                 "bar_foo" to 2,
             )
-        ).toDynamic()
+        )
 
         dynamic["baz"] = false
         

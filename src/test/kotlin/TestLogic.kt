@@ -112,4 +112,27 @@ class TestLogic {
             dynamicObject.toJsonString()
         )
     }
+
+    @Test
+    fun `Test convert DynamicObject to Json String, but with value null`() {
+        val dynamicObject = mapOf(
+            "data" to listOf(
+                mapOf(
+                    "name" to "Peter",
+                    "age" to 21,
+                ),
+                mapOf(
+                    "name" to "Natan",
+                    "age" to 22,
+                    "country" to "Brazil"
+                ),
+            )
+        ).toDynamic()
+        dynamicObject["error"] = null
+
+        assertEquals(
+            "{ \"data\": [{ \"name\": \"Peter\", \"age\": 21 }, { \"name\": \"Natan\", \"country\": \"Brazil\", \"age\": 22 }], \"error\": null }",
+            dynamicObject.toJsonString()
+        )
+    }
 }

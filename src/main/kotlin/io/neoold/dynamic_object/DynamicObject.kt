@@ -109,8 +109,24 @@ class DynamicObject() : HashMap<String, DynamicValue>() {
         return obj
     }
 
-    operator fun set(key: String, any: Any) {
-        super.put(key, any.toDynamicValue())
+    /**
+     * Way to change value in DynamicObject.
+     * Don't send DynamicObject or DynamicList type, will throw IllegalArgumentException.
+     *
+     * Instead, send Map or List.
+     *
+     * @throws IllegalArgumentException if any is DynamicObject or DynamicList.
+     */
+    operator fun set(key: String, any: Any?) {
+        if (any is DynamicValue) {
+            super.put(key, any)
+        } else if (any is DynamicObject) {
+            throw IllegalArgumentException("Invalid type: DynamicObject. Use Map instead.")
+        } else if (any is DynamicList) {
+            throw IllegalArgumentException("Invalid type: DynamicList. Use List instead.")
+        } else {
+            super.put(key, any.toDynamicValue())
+        }
     }
 
     fun toJsonString(): String {
