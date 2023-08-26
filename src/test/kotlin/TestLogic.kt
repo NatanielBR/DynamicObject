@@ -90,4 +90,26 @@ class TestLogic {
         assertEquals(false, dynamicObject["data","0", "isAdmin"]?.toType<Boolean>())
         assertEquals(null, dynamicObject["error"]?.toType<Boolean>())
     }
+
+    @Test
+    fun `Test convert DynamicObject to Json String`() {
+        val dynamicObject = mapOf(
+            "data" to listOf(
+                mapOf(
+                    "name" to "Peter",
+                    "age" to 21,
+                ),
+                mapOf(
+                    "name" to "Natan",
+                    "age" to 22,
+                    "country" to "Brazil"
+                ),
+            )
+        ).toDynamic()
+
+        assertEquals(
+            "{ \"data\": [{ \"name\": \"Peter\", \"age\": 21 }, { \"name\": \"Natan\", \"country\": \"Brazil\", \"age\": 22 }] }",
+            dynamicObject.toJsonString()
+        )
+    }
 }

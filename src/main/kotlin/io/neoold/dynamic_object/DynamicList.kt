@@ -14,6 +14,9 @@ import io.neoold.dynamic_object.DynamicValue.Companion.toDynamicValue
  * And errors as DynamicValue<DynamicValue<Boolean>> may happen.
  */
 class DynamicList private constructor(value: List<DynamicValue>) : ArrayList<DynamicValue>() {
+    fun toJsonString(): String {
+        return "[${joinToString(", ") { it.toJsonString() }}]"
+    }
 
     init {
         this.addAll(value.toMutableList())
