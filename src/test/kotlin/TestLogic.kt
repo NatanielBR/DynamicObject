@@ -1,5 +1,10 @@
+import io.neoold.dynamic_object.DynamicJsonValue.Companion.jsonToDynamicObject
 import io.neoold.dynamic_object.DynamicObject.Companion.toDynamic
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 import kotlin.test.expect
 
 class TestLogic {
@@ -27,5 +32,63 @@ class TestLogic {
             dynamicObject["data"]?.asDynamicList()?.first { it.asDynamicObject().containsKey("country") }
                 ?.asDynamicObject()?.get("name")?.toType<String>()
         }
+    }
+
+    @Test
+    fun `Test Json Conversion`() {
+        @Language("JSON") val jsonText = """
+            {
+                "data": {
+                    "name": "Peter",
+                    "age": 21,
+                    "country": "Brazil",
+                    "isAdmin": false
+                },
+                "error": null
+            }
+        """.trimIndent()
+
+        val dynamic = jsonText.jsonToDynamicObject()
+
+        val dynamicObject = runCatching { dynamic.asDynamicObject() }.getOrNull()
+        assertNotNull(dynamicObject)
+
+        assertEquals("Peter", dynamicObject["data", "name"]?.toType<String>())
+        assertEquals(21, dynamicObject["data", "age"]?.toType<Int>())
+        assertEquals(false, dynamicObject["data", "isAdmin"]?.toType<Boolean>())
+        assertEquals(null, dynamicObject["error"]?.toType<Boolean>())
+    }
+
+    @Test
+    fun `Test Json Conversion with array`() {
+        @Language("JSON") val jsonText = """
+            {
+                "data": [
+                    {
+                        "name": "Peter",
+                        "age": 16,
+                        "country": "Brazil",
+                        "isAdmin": false
+                    },{
+                        "name": "Natan",
+                        "age": 23,
+                        "country": "Brazil",
+                        "isAdmin": true
+                    }
+                ],
+                "error": null
+            }
+        """.trimIndent()
+
+        val dynamic = jsonText.jsonToDynamicObject()
+
+        val dynamicObject = runCatching { dynamic.asDynamicObject() }.getOrNull()
+        assertNotNull(dynamicObject)
+
+        assertEquals("Peter", dynamicObject["data","0", "name"]?.toType<String>())
+        assertEquals(16, dynamicObject["data","0", "age"]?.toType<Int>())
+        assertEquals(23, dynamicObject["data","1", "age"]?.toType<Int>())
+        assertEquals(false, dynamicObject["data","0", "isAdmin"]?.toType<Boolean>())
+        assertEquals(null, dynamicObject["error"]?.toType<Boolean>())
     }
 }

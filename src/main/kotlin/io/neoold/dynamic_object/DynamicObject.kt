@@ -1,12 +1,13 @@
 package io.neoold.dynamic_object
 
 import io.neoold.dynamic_object.DynamicValue.Companion.toDynamicValue
+import kotlinx.serialization.json.JsonElement
 
 /**
  * Represents a dynamic object with Map in your base. Any Map with String as key and Any? as value will be
  * transformed to DynamicObject using Map<String, Any?>.toDynamic() extension.
  */
-class DynamicObject constructor() : HashMap<String, DynamicValue>() {
+class DynamicObject() : HashMap<String, DynamicValue>() {
 
     private constructor(value: Map<String, DynamicValue> = mapOf()) : this() {
         this.putAll(value.toMutableMap())
@@ -112,8 +113,19 @@ class DynamicObject constructor() : HashMap<String, DynamicValue>() {
 
     companion object {
 
+        /**
+         * Convert a Map<String, Any?> to DynamicObject.
+         */
         fun Map<String, Any?>.toDynamic(): DynamicObject {
             return DynamicObject(this.map { it.key to it.value.toDynamicValue() }.toMap())
+        }
+
+        /**
+         * Convert a Map<String, JsonElement> to DynamicObject. Any? its different of JsonElement?, so
+         * need to convert to DynamicJsonValue before.
+         */
+        fun Map<String, JsonElement>.toDynamicJsonObject(): DynamicObject {
+            return DynamicObject(this.map { it.key to DynamicJsonValue(it.value) }.toMap())
         }
     }
 }

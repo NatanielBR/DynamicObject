@@ -2,6 +2,8 @@ package io.neoold.dynamic_object
 
 import io.neoold.dynamic_object.DynamicList.Companion.toDynamic
 import io.neoold.dynamic_object.DynamicObject.Companion.toDynamic
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import java.util.*
 
 /**
@@ -9,7 +11,7 @@ import java.util.*
  * into desired type. To create a DynamicValue, just do instance this object or use extension method:
  * Any.toDynamicValue()
  */
-class DynamicValue(var value: Any?) {
+open class DynamicValue(var value: Any?) {
 
     init {
         if (value is Map<*, *>) {
